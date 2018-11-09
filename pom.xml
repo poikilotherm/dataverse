@@ -716,5 +716,94 @@
         <id>all-unit-tests</id>
       </profile>
       <!-- TODO: Add a profile to run API tests (integration tests that end in IT.java. See conf/docker-aio/run-test-suite.sh -->
+        <profile>
+            <id>container</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>3.2.2</version>
+                        <configuration>
+                            <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
+                            <attachClasses>true</attachClasses>
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                            <archive>
+                                <manifest>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                    <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                    <!-- Build docker images (defaults to "install" phase) -->
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.27.1</version>
+            
+                        <configuration>
+                            <images>
+                                <!-- application -->
+                                <image>
+                                    <alias>dv</alias>
+                                    <name>iqss/dataverse:${project.version}</name>
+                                    <build>
+                                        <dockerFileDir>${project.basedir}/conf/docker/app</dockerFileDir>
+                                        <assembly>
+                                            <inline>
+                                                <includeBaseDirectory>false</includeBaseDirectory>
+                                                <dependencySets>
+                                                    <!-- copy the WAR artifact -->
+                                                    <dependencySet>
+                                                        <useProjectArtifact>true</useProjectArtifact>
+                                                        <includes>
+                                                            <include>${project.groupId}:${project.artifactId}</include>
+                                                        </includes>
+                                                        <outputFileNameMapping>${project.build.finalName}.${artifact.extension}</outputFileNameMapping>
+                                                    </dependencySet>
+                                                    <!-- copy dependencies to maven/lib folder -->
+                                                    <dependencySet>
+                                                        <outputDirectory>lib</outputDirectory>
+                                                        <useProjectArtifact>false</useProjectArtifact>
+                                                        <scope>runtime</scope>
+                                                        <fileMode>0644</fileMode>
+                                                    </dependencySet>
+                                                </dependencySets>
+                                            </inline>
+                                        </assembly>
+                                    </build>
+                                </image>
+                                <!-- database -->
+                                <!-- solr -->
+                            </images>
+                        </configuration>
+            
+                        <!-- Connect start/stop to pre- and
+                             post-integration-test phase, respectively if you want to start
+                             your docker containers during integration tests -->
+                        <executions>
+                            <execution>
+                                <id>start</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <!-- "build" should be used to create the images with the
+                                         artifact -->
+                                    <goal>build</goal>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>stop</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>
