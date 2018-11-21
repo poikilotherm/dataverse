@@ -1,4 +1,4 @@
-FROM payara/server-full:latest
+FROM quay.io/poikilotherm/payara-full:latest
 
 ARG LIB_PATH="${PAYARA_DIR}/glassfish/domains/${DOMAIN_NAME}/lib/"
 
