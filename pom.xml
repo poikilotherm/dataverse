@@ -14,8 +14,8 @@
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<additionalparam>-Xdoclint:none</additionalparam>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <additionalparam>-Xdoclint:none</additionalparam>
         <!-- Needed to avoid IDEA IDE compilation failures. See commits in GH #5059 -->
         <compilerArgument></compilerArgument>
         <project.timezone>UTC</project.timezone>
@@ -463,7 +463,7 @@
             <artifactId>commons-codec</artifactId>
             <version>1.9</version>
         </dependency>
-	<!-- JavaSwift/JOSS: for accessing OpenStack cloud storage -->
+	      <!-- JavaSwift/JOSS: for accessing OpenStack cloud storage -->
         <dependency>
             <groupId>org.javaswift</groupId>
             <artifactId>joss</artifactId>
@@ -495,27 +495,27 @@
             <artifactId>scribejava-apis</artifactId>
             <version>3.1.0</version>
         </dependency>
-	<!-- EXPERIMENTAL: -->
-	<!-- lyncode xoai OAI-PMH implementation: -->
-	<!-- unfortunately, their 4.10 version -->
-	<!-- is still buggy. As an experiment, I'm using -->
-	<!-- a patched version I built locally. -->
-	<!-- (pull requests pending - L.A. -->
-	<dependency>
-	  <groupId>com.lyncode</groupId>
-	  <artifactId>xoai-common</artifactId>
-	  <version>4.1.0-header-patch</version>
-	</dependency>
-	<dependency>
-	  <groupId>com.lyncode</groupId>
-	  <artifactId>xoai-data-provider</artifactId>
-	  <version>4.1.0-header-patch</version>
-	</dependency>
+        <!-- EXPERIMENTAL: -->
+        <!-- lyncode xoai OAI-PMH implementation: -->
+        <!-- unfortunately, their 4.10 version -->
+        <!-- is still buggy. As an experiment, I'm using -->
+        <!-- a patched version I built locally. -->
+        <!-- (pull requests pending - L.A. -->
         <dependency>
-	  <groupId>com.lyncode</groupId>
-	  <artifactId>xoai-service-provider</artifactId>
-	  <version>4.1.0-header-patch</version>
-	</dependency>
+            <groupId>com.lyncode</groupId>
+            <artifactId>xoai-common</artifactId>
+            <version>4.1.0-header-patch</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lyncode</groupId>
+            <artifactId>xoai-data-provider</artifactId>
+            <version>4.1.0-header-patch</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lyncode</groupId>
+            <artifactId>xoai-service-provider</artifactId>
+            <version>4.1.0-header-patch</version>
+        </dependency>
         <!-- Added for AutoService -->
         <dependency>
             <groupId>com.google.auto.service</groupId>
@@ -526,16 +526,16 @@
         </dependency>
         <!-- For API File Upload: 1 of 2 -->
         <dependency>
-           <groupId>org.glassfish.jersey.containers</groupId>
-           <artifactId>jersey-container-servlet</artifactId>
-           <version>2.23.2</version>
-       </dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.23.2</version>
+        </dependency>
         <!-- For API File Upload: 2 of 2 -->
-       <dependency>
-           <groupId>org.glassfish.jersey.media</groupId>
-           <artifactId>jersey-media-multipart</artifactId>
-           <version>2.23.2</version>
-       </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>2.23.2</version>
+        </dependency>
         <dependency>
             <groupId>com.mashape.unirest</groupId>
             <artifactId>unirest-java</artifactId>
@@ -550,22 +550,6 @@
     </dependencies>
 
     <build>
-<!--        <testResources>
-            <testResource>
-                <directory>${project.basedir}/src/main/resources</directory>
-            </testResource>
-        </testResources>-->
-<!--        <testResources>
-            <testResource>
-              <directory>${project.basedir}/src/test/java</directory>
-              <excludes>
-                  <exclude>**/*.java</exclude>
-              </excludes>
-            </testResource>
-            <testResource>
-              <directory>${project.basedir}/src/test/resources</directory>
-            </testResource>
-          </testResources>-->
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -615,7 +599,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
-		    <attachClasses>true</attachClasses>
+		                <attachClasses>true</attachClasses>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <archive>
                         <manifest>
@@ -701,21 +685,21 @@
         </plugins>
     </build>
     <profiles>
-      <profile>
-        <id>dev</id>
-        <activation>
-            <!-- https://stackoverflow.com/questions/11824328/default-build-profile-for-maven -->
-            <!-- We set dev to true to developers don't have to run non-essential tests over and over. -->
-          <activeByDefault>true</activeByDefault>
-        </activation>
-        <properties>
-            <testsToExclude>edu.harvard.iq.dataverse.NonEssentialTests</testsToExclude>
-        </properties>
-      </profile>
-      <profile>
-        <id>all-unit-tests</id>
-      </profile>
-      <!-- TODO: Add a profile to run API tests (integration tests that end in IT.java. See conf/docker-aio/run-test-suite.sh -->
+        <profile>
+            <id>dev</id>
+            <activation>
+                <!-- https://stackoverflow.com/questions/11824328/default-build-profile-for-maven -->
+                <!-- We set dev to true to developers don't have to run non-essential tests over and over. -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <testsToExclude>edu.harvard.iq.dataverse.NonEssentialTests</testsToExclude>
+            </properties>
+        </profile>
+        <profile>
+            <id>all-unit-tests</id>
+        </profile>
+        <!-- TODO: Add a profile to run API tests (integration tests that end in IT.java. See conf/docker-aio/run-test-suite.sh -->
         <profile>
             <id>container</id>
             <build>
