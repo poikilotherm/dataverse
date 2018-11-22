@@ -27,6 +27,7 @@
         -->
         <argLine>-Duser.timezone=${project.timezone} -Dfile.encoding=${project.build.sourceEncoding} -Duser.language=${project.language} -Duser.region=${project.region}</argLine>
     
+        <postgres.version>42.2.5</postgres.version>
         <aws.version>1.11.172</aws.version>
         <jackson.version>2.9.6</jackson.version>
         <joda.version>2.10.1</joda.version>
@@ -702,6 +703,16 @@
         <!-- TODO: Add a profile to run API tests (integration tests that end in IT.java. See conf/docker-aio/run-test-suite.sh -->
         <profile>
             <id>container</id>
+            <dependencies>
+                <!-- Adding this as a dependency will copy it to the domains /lib folder, where it needs to be. -->
+                <!-- FIXME: Gassfish should be capable to load the driver directly from the WAR, too. That would render
+                            the installer a tiny bit simpler and make distribution easier. Needs testing. -->
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                    <version>${postgres.version}</version>
+                </dependency>
+            </dependencies>
             <build>
                 <plugins>
                     <plugin>
