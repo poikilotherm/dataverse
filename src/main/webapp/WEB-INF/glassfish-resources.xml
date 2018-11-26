@@ -14,4 +14,25 @@
     <property name="create" value="true" />
   </jdbc-connection-pool>
   <jdbc-resource jndi-name="java:app/DV/VDCNetDS" pool-name="dvnDbPool"/>
+  
+  <!-- Java Messaging Service Configuration -->
+  <admin-object-resource
+      jndi-name="jms/DataverseIngest"
+      res-adapter="jmsra"
+      res-type="javax.jms.Queue">
+    <property name="Name" value="DataverseIngest"/>
+  </admin-object-resource>
+  <connector-connection-pool
+      connection-definition-name="javax.jms.QueueConnectionFactory"
+      max-pool-size="250"
+      max-wait-time-in-millis="60000"
+      name="jms/IngestQueueConnectionPool"
+      pool-resize-quantity="2"
+      resource-adapter-name="jmsra"
+      steady-pool-size="1"/>
+  <connector-resource
+      jndi-name="jms/IngestQueueConnectionFactory"
+      pool-name="jms/IngestQueueConnectionPool">
+    <property name="Name" value="IngestQueueConnectionFactory"/>
+  </connector-resource>
 </resources>

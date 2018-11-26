@@ -11,6 +11,10 @@ create-system-properties "postgres.port=5432"
 create-system-properties "postgres.database=dataverse
 create-system-properties "postgres.user=dataverse"
 create-password-alias    "postgres-pass" --passwordfile ${PAYARA_DIR}/dbpass
+
+# Do not validate resources, or JMS resources defined in
+# glassfish-resources.xml cannot be created
+create-system-properties "deployment.resource.validation=false"
 EOF
 
 echo "$(cat ${POSTBOOT_COMMANDS}.tmp | cat - ${POSTBOOT_COMMANDS} )" > ${POSTBOOT_COMMANDS}
