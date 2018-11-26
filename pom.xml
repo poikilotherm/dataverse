@@ -706,7 +706,11 @@
             <dependencies>
                 <!-- Adding this as a dependency will copy it to the domains /lib folder, where it needs to be. -->
                 <!-- FIXME: Gassfish should be capable to load the driver directly from the WAR, too. That would render
-                            the installer a tiny bit simpler and make distribution easier. Needs testing. -->
+                            the installer a tiny bit simpler and make distribution easier.
+                            Needs testing. See also:
+                            https://github.com/eclipse-ee4j/glassfish/issues/19451
+                            https://github.com/eclipse-ee4j/glassfish/issues/20944
+                            -->
                 <dependency>
                     <groupId>org.postgresql</groupId>
                     <artifactId>postgresql</artifactId>

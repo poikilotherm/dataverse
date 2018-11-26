@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<resources>
+  <!-- Java DataBase Connection Configuration -->
+  <jdbc-connection-pool
+      res-type="javax.sql.DataSource"
+      datasource-classname="org.postgresql.ds.PGPoolingDataSource"
+      name="dvnDbPool">
+    <property name="serverName" value="${postgres.host}"/>
+    <property name="portNumber" value="${postgres.port}"/>
+    <property name="databaseName" value="${postgres.database}"/>
+    <property name="User" value="${postgres.user}"/>
+    <property name="Password" value="${ALIAS=postgres-pass}"/>
+    <property name="create" value="true" />
+  </jdbc-connection-pool>
+  <jdbc-resource jndi-name="java:app/DV/VDCNetDS" pool-name="dvnDbPool"/>
+</resources>
