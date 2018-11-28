@@ -108,6 +108,8 @@ import javax.jms.QueueSession;
 import javax.jms.Message;
 import javax.faces.bean.ManagedBean;
 import javax.faces.application.FacesMessage;
+import javax.resource.AdministeredObjectDefinition;
+import javax.resource.ConnectionFactoryDefinition;
 
 /**
  *
@@ -132,9 +134,9 @@ public class IngestServiceBean {
     @EJB
     SystemConfig systemConfig;
 
-    @Resource(mappedName = "jms/DataverseIngest")
+    @Resource(mappedName = "java:app/jms/DataverseIngest")
     Queue queue;
-    @Resource(mappedName = "jms/IngestQueueConnectionFactory")
+    @Resource(mappedName = "java:app/jms/IngestQueueConnectionFactory")
     QueueConnectionFactory factory;
     
 
