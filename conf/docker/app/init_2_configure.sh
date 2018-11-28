@@ -6,7 +6,7 @@
 echo "AS_ADMIN_ALIASPASSWORD=test1234" > ${PAYARA_DIR}/dbpass
 
 cat > ${POSTBOOT_COMMANDS}.tmp << 'EOF'
-create-system-properties "postgres.host=postgres"
+create-system-properties "postgres.host=postgres-1"
 create-system-properties "postgres.port=5432"
 create-system-properties "postgres.database=dataverse
 create-system-properties "postgres.user=dataverse"
