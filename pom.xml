@@ -704,12 +704,13 @@
         <profile>
             <id>container</id>
             <dependencies>
-                <!-- Adding this as a dependency will copy it to the domains /lib folder, where it needs to be. -->
                 <!-- FIXME: Gassfish should be capable to load the driver directly from the WAR, too. That would render
                             the installer a tiny bit simpler and make distribution easier.
                             Needs testing. See also:
                             https://github.com/eclipse-ee4j/glassfish/issues/19451
                             https://github.com/eclipse-ee4j/glassfish/issues/20944
+                            
+                      TODO: Tested and works for Payara 5 in WEB-INF/lib of WAR
                             -->
                 <dependency>
                     <groupId>org.postgresql</groupId>
@@ -719,22 +720,6 @@
             </dependencies>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <version>3.2.2</version>
-                        <configuration>
-                            <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
-                            <attachClasses>true</attachClasses>
-                            <failOnMissingWebXml>false</failOnMissingWebXml>
-                            <archive>
-                                <manifest>
-                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                                    <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                                </manifest>
-                            </archive>
-                        </configuration>
-                    </plugin>
                     <!-- Build docker images (defaults to "install" phase) -->
                     <plugin>
                         <groupId>io.fabric8</groupId>
@@ -753,20 +738,18 @@
                                             <inline>
                                                 <includeBaseDirectory>false</includeBaseDirectory>
                                                 <dependencySets>
-                                                    <!-- copy the WAR artifact -->
+                                                    <!-- Copy the (big) WAR artifact with dependencies inside -->
+                                                    <!-- FIXME: Think of a way to split this in multiple layers for Docker.
+                                                                Be aware that things like OmniFaces need to be on
+                                                                WEB-INF/lib, due to Servlet 3.0 spec.
+                                                                See also: https://stackoverflow.com/questions/30535024
+                                                         -->
                                                     <dependencySet>
                                                         <useProjectArtifact>true</useProjectArtifact>
                                                         <includes>
                                                             <include>${project.groupId}:${project.artifactId}</include>
                                                         </includes>
                                                         <outputFileNameMapping>${project.build.finalName}.${artifact.extension}</outputFileNameMapping>
-                                                    </dependencySet>
-                                                    <!-- copy dependencies to maven/lib folder -->
-                                                    <dependencySet>
-                                                        <outputDirectory>lib</outputDirectory>
-                                                        <useProjectArtifact>false</useProjectArtifact>
-                                                        <scope>runtime</scope>
-                                                        <fileMode>0644</fileMode>
                                                     </dependencySet>
                                                 </dependencySets>
                                             </inline>
