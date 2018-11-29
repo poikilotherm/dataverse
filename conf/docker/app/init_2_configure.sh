@@ -17,5 +17,17 @@ create-password-alias    "postgres-pass" --passwordfile ${PAYARA_DIR}/dbpass
 create-system-properties "deployment.resource.validation=false"
 EOF
 
+# Set Dataverse environment variables
+echo "# --- DATAVERSE CONFIGURATION OPTIONS FOLLOWING ---" >> ${POSTBOOT_COMMANDS}.tmp
+env -0 | grep -z -Ee "^(dataverse|doi)_" | while IFS='=' read -r -d '' k v; do
+    KEY=`echo "${k}" | tr '_' '.'`
+    echo "create-system-properties \"${KEY}=${v}\"" >> ${POSTBOOT_COMMANDS}.tmp
+done
+# Delete environment variables not needed anymore
+env -0 | grep -z -Ee "^delete_(dataverse|doi)_" | while IFS='=' read -r -d '' k v; do
+    KEY=`echo "${k}" | sed -e 's#delete_##' | tr '_' '.'`
+    echo "delete-system-property \"${KEY}\"" >> ${POSTBOOT_COMMANDS}.tmp
+done
+
 echo "$(cat ${POSTBOOT_COMMANDS}.tmp | cat - ${POSTBOOT_COMMANDS} )" > ${POSTBOOT_COMMANDS}
 cat ${POSTBOOT_COMMANDS}

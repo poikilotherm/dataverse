@@ -758,6 +758,11 @@
                                         </assembly>
                                     </build>
                                     <run>
+                                        <env>
+                                            <dataverse_timerServer>true</dataverse_timerServer>
+                                            <dataverse_files_directory>/data</dataverse_files_directory>
+                                            <dataverse_fqdn>localhost</dataverse_fqdn>
+                                        </env>
                                         <ports>
                                             <port>8080:8080</port>
                                         </ports>
