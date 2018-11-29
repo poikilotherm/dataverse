@@ -33,6 +33,8 @@
         <joda.version>2.10.1</joda.version>
         <commons.logging.version>1.2</commons.logging.version>
         <httpcomponents.client.version>4.5.5</httpcomponents.client.version>
+        <!-- FIXME: This is old and unmaintained. Should be switched to v2.x or better v3.x -->
+        <omnifaces.version>1.14.1</omnifaces.version>
         
         <junit.version>4.12</junit.version>
         <junit.jupiter.version>5.3.1</junit.jupiter.version>
@@ -286,7 +288,7 @@
         <dependency>
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
-            <version>1.7</version> <!-- Or 1.8-SNAPSHOT -->
+            <version>${omnifaces.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
