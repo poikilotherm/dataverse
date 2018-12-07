@@ -21,6 +21,7 @@ class StartupFlywayMigrator {
         Flyway flyway = Flyway.configure()
                 .dataSource(dataSource)
                 .baselineOnMigrate(true)
+                .callbacks(new BootstrapCallback())
                 .load();
 
         flyway.migrate();
