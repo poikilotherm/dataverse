@@ -216,6 +216,15 @@ public class DatasetField implements Serializable {
         }
         return filtered;
     }
+    
+    /**
+     * Check if the number of vocables in a vocabulary is less or equal to the given maximum.
+     * @param max Maximum size of vocabulary before returning false
+     * @return true when vocabulary contains less or equal entries, false otherwise.
+     */
+    public boolean isSmallVocabulary(int max) {
+        return this.getDatasetFieldType().getControlledVocabularyValues().size() < max+1;
+    }
 
     // HELPER METHODS
     public DatasetFieldValue getSingleValue() {

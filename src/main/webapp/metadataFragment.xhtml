@@ -155,13 +155,13 @@
                                                         <ui:fragment rendered="#{dsf.datasetFieldType.controlledVocabulary}">
                                                             <p:autoComplete rendered="#{!dsf.datasetFieldType.allowMultiples}"
                                                                             value="#{singleControlledVocabularyValue}" converter="controlledVocabularyValueConverter"
-                                                                            multiple="false" forceSelection="true" dynamic="true"
+                                                                            multiple="false" forceSelection="true" dynamic="true" dropdown="#{dsf.isSmallVocabulary(20)}"
                                                                             var="cvv" itemLabel="#{cvv.localeStrValue}" itemValue="#{cvv}"
                                                                             completeMethod="#{dsf.completeVocabulary}">
                                                             </p:autoComplete>
                                                             <p:autoComplete rendered="#{dsf.datasetFieldType.allowMultiples}"
                                                                             value="#{dsf.controlledVocabularyValues}" converter="controlledVocabularyValueConverter"
-                                                                            multiple="true" forceSelection="true" dynamic="true"
+                                                                            multiple="true" forceSelection="true" dynamic="true" dropdown="#{dsf.isSmallVocabulary(20)}"
                                                                             var="cvv" itemLabel="#{cvv.localeStrValue}" itemValue="#{cvv}"
                                                                             completeMethod="#{dsf.completeVocabulary}">
                                                             </p:autoComplete>
@@ -205,13 +205,13 @@
                                                                 <div jsf:rendered="#{subdsf.datasetFieldType.controlledVocabulary}">
                                                                     <p:autoComplete rendered="#{!subdsf.datasetFieldType.allowMultiples}"
                                                                                     value="#{singleControlledVocabularyValue}" converter="controlledVocabularyValueConverter"
-                                                                                    multiple="false" forceSelection="true" dynamic="true"
+                                                                                    multiple="false" forceSelection="true" dynamic="true" dropdown="#{subdsf.isSmallVocabulary(20)}"
                                                                                     var="cvv" itemLabel="#{cvv.localeStrValue}" itemValue="#{cvv}"
                                                                                     completeMethod="#{subdsf.completeVocabulary}">
                                                                     </p:autoComplete>
                                                                     <p:autoComplete rendered="#{subdsf.datasetFieldType.allowMultiples}"
                                                                                     value="#{subdsf.controlledVocabularyValues}" converter="controlledVocabularyValueConverter"
-                                                                                    multiple="true" forceSelection="true" dynamic="true"
+                                                                                    multiple="true" forceSelection="true" dynamic="true" dropdown="#{subdsf.isSmallVocabulary(20)}"
                                                                                     var="cvv" itemLabel="#{cvv.localeStrValue}" itemValue="#{cvv}"
                                                                                     completeMethod="#{subdsf.completeVocabulary}">
                                                                     </p:autoComplete>
