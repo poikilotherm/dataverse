@@ -191,7 +191,13 @@ public class DatasetField implements Serializable {
     public void setDatasetFieldValues(List<DatasetFieldValue> datasetFieldValues) {
         this.datasetFieldValues = datasetFieldValues;
     }
-
+    
+    /**
+     * The list of vocabs set for this DatasetField in the database.
+     * This is NOT the list of all vocables available, see {@link DatasetFieldType#controlledVocabularyValues} for those.
+     * @see #setControlledVocabularyValues(List) 
+     * @see #setSingleControlledVocabularyValue(ControlledVocabularyValue)
+     */
     @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(indexes = {@Index(columnList="datasetfield_id"),@Index(columnList="controlledvocabularyvalues_id")})
     private List<ControlledVocabularyValue> controlledVocabularyValues = new ArrayList<>();
@@ -219,7 +225,15 @@ public class DatasetField implements Serializable {
         }
         datasetFieldValues.get(0).setValue(value);
     }
-
+    
+    /**
+     * This method is necessary as a helper for the view.
+     * Used vocabulary values are stored as a list in the database (via ManyToMany join),
+     * but with JSF you have to enable multi-selection to target the list {@link #controlledVocabularyValues}.
+     * As a consequence, for metadata fields not allowing multiple selection by intent/design,
+     * we need a workaround to target a single value.
+     * @return The current value for a single value UI field using controlled vocabulary.
+     */
     public ControlledVocabularyValue getSingleControlledVocabularyValue() {
         if (!controlledVocabularyValues.isEmpty()) {
             return controlledVocabularyValues.get(0);
@@ -227,7 +241,15 @@ public class DatasetField implements Serializable {
             return null;
         }
     }
-
+    
+    /**
+     * This method is necessary as a helper for the view.
+     * Used vocabulary values are stored as a list in the database (via ManyToMany join),
+     * but with JSF you have to enable multi-selection to target the list {@link #controlledVocabularyValues}.
+     * As a consequence, for metadata fields not allowing multiple selection by intent/design,
+     * we need a workaround to target a single value.
+     * @param cvv The value to set for the UI field.
+     */
     public void setSingleControlledVocabularyValue(ControlledVocabularyValue cvv) {
         if (!controlledVocabularyValues.isEmpty()) {
             controlledVocabularyValues.set(0, cvv);

@@ -97,7 +97,12 @@ public class DatasetFieldType implements Serializable, Comparable<DatasetFieldTy
     
     @Transient
     private List<String> listValues;
-
+    
+    /**
+     * TODO: this seems to be only used in {@link #getControlledVocabularyValue(String)}.
+     * It should be moved to the test class and not reside here.
+     * @deprecated
+     */
     @Transient
     private Map<String, ControlledVocabularyValue> controlledVocabularyValuesByStrValue;
     
@@ -327,6 +332,12 @@ public class DatasetFieldType implements Serializable, Comparable<DatasetFieldTy
         this.controlledVocabularyValues = controlledVocabularyValues;
     }
     
+    /**
+     * TODO: this seems to be only used in {@link edu.harvard.iq.dataverse.util.json.JsonParserTest}. It should be moved to the test class and not reside here.
+     * @deprecated
+     * @param strValue
+     * @return
+     */
     public ControlledVocabularyValue getControlledVocabularyValue( String strValue ) {
         if ( ! isControlledVocabulary() ) {
             throw new IllegalStateException("getControlledVocabularyValue() called on a non-controlled vocabulary type.");
