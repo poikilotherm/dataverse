@@ -10,15 +10,7 @@ package edu.harvard.iq.dataverse;
  * @author skraffmiller
  */
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -208,6 +200,21 @@ public class DatasetField implements Serializable {
 
     public void setControlledVocabularyValues(List<ControlledVocabularyValue> controlledVocabularyValues) {
         this.controlledVocabularyValues = controlledVocabularyValues;
+    }
+    
+    /**
+     * Autocomplete backing method, creating a list of matching values
+     * @param query The users string typed into autocomplete search field
+     * @return List of matching vocabulary items (containing the query string in their l18n string)
+     */
+    public Collection<ControlledVocabularyValue> completeVocabulary(String query) {
+        Collection<ControlledVocabularyValue> filtered = new ArrayList<>();
+        for (ControlledVocabularyValue item : this.getDatasetFieldType().getControlledVocabularyValues()) {
+            if (item.getLocaleStrValue().toLowerCase().contains(query.toLowerCase())) {
+                filtered.add(item);
+            }
+        }
+        return filtered;
     }
 
     // HELPER METHODS
