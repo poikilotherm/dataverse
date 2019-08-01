@@ -11,6 +11,7 @@ package edu.harvard.iq.dataverse;
  */
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -208,13 +209,11 @@ public class DatasetField implements Serializable {
      * @return List of matching vocabulary items (containing the query string in their l18n string)
      */
     public Collection<ControlledVocabularyValue> completeVocabulary(String query) {
-        Collection<ControlledVocabularyValue> filtered = new ArrayList<>();
-        for (ControlledVocabularyValue item : this.getDatasetFieldType().getControlledVocabularyValues()) {
-            if (item.getLocaleStrValue().toLowerCase().contains(query.toLowerCase())) {
-                filtered.add(item);
-            }
-        }
-        return filtered;
+        String q = query.toLowerCase();
+        return this.getDatasetFieldType().getControlledVocabularyValues()
+                .stream()
+                .filter(cvv -> cvv.getLocaleStrValue().toLowerCase().contains(q))
+                .collect(Collectors.toList());
     }
     
     /**
