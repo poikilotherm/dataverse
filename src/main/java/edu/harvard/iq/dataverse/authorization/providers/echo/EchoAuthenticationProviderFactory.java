@@ -1,7 +1,7 @@
 package edu.harvard.iq.dataverse.authorization.providers.echo;
 
-import edu.harvard.iq.dataverse.authorization.AuthenticationProvider;
-import edu.harvard.iq.dataverse.authorization.AuthenticationProviderDisplayInfo;
+import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProvider;
+import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProviderDisplayInfo;
 import edu.harvard.iq.dataverse.authorization.exceptions.AuthorizationSetupException;
 import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProviderFactory;
 import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProviderRow;

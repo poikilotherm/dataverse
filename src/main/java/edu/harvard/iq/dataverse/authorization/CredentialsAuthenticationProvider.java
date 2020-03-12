@@ -1,5 +1,7 @@
 package edu.harvard.iq.dataverse.authorization;
 
+import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProvider;
+
 import java.util.List;
 
 /**

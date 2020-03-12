@@ -17,9 +17,9 @@ import com.nimbusds.openid.connect.sdk.op.OIDCProviderConfigurationRequest;
 import com.nimbusds.openid.connect.sdk.op.OIDCProviderMetadata;
 import edu.harvard.iq.dataverse.authorization.AuthenticatedUserDisplayInfo;
 import edu.harvard.iq.dataverse.authorization.exceptions.AuthorizationSetupException;
+import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProvider;
 import edu.harvard.iq.dataverse.authorization.providers.oauth2.AbstractOAuth2AuthenticationProvider;
 import edu.harvard.iq.dataverse.authorization.providers.oauth2.OAuth2Exception;
-import edu.harvard.iq.dataverse.authorization.providers.oauth2.OAuth2TokenData;
 import edu.harvard.iq.dataverse.authorization.providers.oauth2.OAuth2UserRecord;
 import edu.harvard.iq.dataverse.util.BundleUtil;
 
@@ -54,7 +54,7 @@ public class OIDCAuthProvider extends AbstractOAuth2AuthenticationProvider {
     }
     
     /**
-     * Although this is defined in {@link edu.harvard.iq.dataverse.authorization.AuthenticationProvider},
+     * Although this is defined in {@link AuthenticationProvider},
      * this needs to be present due to bugs in ELResolver (has been modified for Spring).
      * TODO: for the future it might be interesting to make this configurable via the provider JSON (it's used for ORCID!)
      * @see <a href="https://issues.jboss.org/browse/JBEE-159">JBoss Issue 159</a>

@@ -1,6 +1,5 @@
 package edu.harvard.iq.dataverse.authorization.providers;
 
-import edu.harvard.iq.dataverse.authorization.AuthenticationProvider;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;

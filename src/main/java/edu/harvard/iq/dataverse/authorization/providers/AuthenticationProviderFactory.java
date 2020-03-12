@@ -1,6 +1,5 @@
 package edu.harvard.iq.dataverse.authorization.providers;
 
-import edu.harvard.iq.dataverse.authorization.AuthenticationProvider;
 import edu.harvard.iq.dataverse.authorization.exceptions.AuthorizationSetupException;
 
 /**

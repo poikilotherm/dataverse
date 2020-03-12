@@ -10,8 +10,8 @@ import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import edu.harvard.iq.dataverse.LoginPage;
 import edu.harvard.iq.dataverse.authorization.AuthenticatedUserDisplayInfo;
-import edu.harvard.iq.dataverse.authorization.AuthenticationProvider;
-import edu.harvard.iq.dataverse.authorization.AuthenticationProviderDisplayInfo;
+import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProvider;
+import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProviderDisplayInfo;
 import edu.harvard.iq.dataverse.util.BundleUtil;
 
 import javax.validation.constraints.NotNull;

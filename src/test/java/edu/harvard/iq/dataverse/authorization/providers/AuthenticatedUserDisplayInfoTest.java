@@ -1,5 +1,6 @@
-package edu.harvard.iq.dataverse.authorization;
+package edu.harvard.iq.dataverse.authorization.providers;
 
+import edu.harvard.iq.dataverse.authorization.AuthenticatedUserDisplayInfo;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

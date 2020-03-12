@@ -1,5 +1,6 @@
-package edu.harvard.iq.dataverse.authorization;
+package edu.harvard.iq.dataverse.authorization.providers;
 
+import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProvider;
 import edu.harvard.iq.dataverse.util.BundleUtil;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;

@@ -1,5 +1,7 @@
 package edu.harvard.iq.dataverse.authorization;
 
+import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProvider;
+
 /**
  * This object decouples the lookup string used by an
  * {@link AuthenticationProvider} from the internal user identifier used for

@@ -1,4 +1,4 @@
-package edu.harvard.iq.dataverse.authorization;
+package edu.harvard.iq.dataverse.authorization.providers;
 
 /**
  * Display information for an {@link AuthenticationProvider}.
