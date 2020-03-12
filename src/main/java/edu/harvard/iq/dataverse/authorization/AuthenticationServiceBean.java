@@ -8,7 +8,7 @@ import edu.harvard.iq.dataverse.search.IndexServiceBean;
 import edu.harvard.iq.dataverse.actionlogging.ActionLogRecord;
 import edu.harvard.iq.dataverse.actionlogging.ActionLogServiceBean;
 import edu.harvard.iq.dataverse.authorization.exceptions.AuthenticationFailedException;
-import edu.harvard.iq.dataverse.authorization.exceptions.AuthenticationProviderFactoryNotFoundException;
+import edu.harvard.iq.dataverse.authorization.exceptions.AuthenticationProviderConfigurationException;
 import edu.harvard.iq.dataverse.authorization.exceptions.AuthorizationSetupException;
 import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProviderFactory;
 import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProviderRow;
@@ -126,10 +126,6 @@ public class AuthenticationServiceBean {
                 .getResultList().forEach((row) -> {
                     try {
                         registerProvider( loadProvider(row) );
-                        
-                    } catch ( AuthenticationProviderFactoryNotFoundException e ) {
-                        logger.log(Level.SEVERE, "Cannot find authentication provider factory with alias '" + e.getFactoryAlias() + "'",e);
-                        
                     } catch (AuthorizationSetupException ex) {
                         logger.log(Level.SEVERE, "Exception setting up the authentication provider '" + row.getId() + "': " + ex.getMessage(), ex);
                     }
@@ -152,14 +148,12 @@ public class AuthenticationServiceBean {
      * Tries to load and {@link AuthenticationProvider} using the passed {@link AuthenticationProviderRow}.
      * @param aRow The row to load the provider from.
      * @return The provider, if successful
-     * @throws AuthenticationProviderFactoryNotFoundException If the row specifies a non-existent factory
      * @throws AuthorizationSetupException If the factory failed to instantiate a provider from the row.
      */
-    public AuthenticationProvider loadProvider( AuthenticationProviderRow aRow )
-                throws AuthenticationProviderFactoryNotFoundException, AuthorizationSetupException {
+    public AuthenticationProvider loadProvider( AuthenticationProviderRow aRow ) throws AuthorizationSetupException {
         AuthenticationProviderFactory fact = getProviderFactory(aRow.getFactoryAlias());
         
-        if ( fact == null ) throw new AuthenticationProviderFactoryNotFoundException(aRow.getFactoryAlias());
+        if ( fact == null ) throw new AuthenticationProviderConfigurationException(aRow.getFactoryAlias());
         
         return fact.buildProvider(aRow);
     }

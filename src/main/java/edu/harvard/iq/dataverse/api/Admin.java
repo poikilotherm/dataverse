@@ -20,7 +20,6 @@ import edu.harvard.iq.dataverse.api.dto.RoleDTO;
 import edu.harvard.iq.dataverse.authorization.AuthenticatedUserDisplayInfo;
 import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProvider;
 import edu.harvard.iq.dataverse.authorization.UserIdentifier;
-import edu.harvard.iq.dataverse.authorization.exceptions.AuthenticationProviderFactoryNotFoundException;
 import edu.harvard.iq.dataverse.authorization.exceptions.AuthorizationSetupException;
 import edu.harvard.iq.dataverse.authorization.groups.GroupServiceBean;
 import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProviderRow;
@@ -266,10 +265,6 @@ public class Admin extends AbstractApiBean {
 			try {
 				authSvc.registerProvider(authSvc.loadProvider(row));
 				return ok(String.format("Authentication Provider %s enabled", row.getId()));
-
-			} catch (AuthenticationProviderFactoryNotFoundException ex) {
-				return notFound(String.format("Can't instantiate provider, as there's no factory with alias %s",
-						row.getFactoryAlias()));
 			} catch (AuthorizationSetupException ex) {
 				logger.log(Level.WARNING, "Error instantiating authentication provider: " + ex.getMessage(), ex);
 				return error(Status.INTERNAL_SERVER_ERROR,
