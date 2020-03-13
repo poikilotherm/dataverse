@@ -1,0 +1,6 @@
+{
+    "id": "test",
+    "type": "builtin",
+    "enabled": true,
+    "title": "Test"
+}

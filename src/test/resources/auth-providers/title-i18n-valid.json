@@ -1,0 +1,8 @@
+{
+    "id": "test",
+    "type": "builtin",
+    "enabled": true,
+    "title": {
+        "en": "Test"
+    }
+}
