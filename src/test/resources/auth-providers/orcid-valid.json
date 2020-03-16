@@ -1,0 +1,12 @@
+{
+    "id": "test",
+    "type": "orcid",
+    "enabled": true,
+    "title": {
+        "en": "Test"
+    },
+    "options": {
+        "client_id": "test",
+        "client_secret": "test"
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "id": "test",
+    "type": "notexisting",
+    "enabled": "true",
+    "title": "Test"
+}

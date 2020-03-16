@@ -1,0 +1,11 @@
+{
+    "id": "test",
+    "type": "shib",
+    "enabled": true,
+    "title": {
+        "en": "Test"
+    },
+    "options": {
+        "passive_login": true
+    }
+}
