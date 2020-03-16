@@ -57,7 +57,6 @@ public class AuthenticationProviderConfiguration implements java.io.Serializable
     private Map<Locale,String> description;
     
     @Lob
-    @JsonUnwrapped
     @JsonProperty("options")
     @Convert(converter = AuthenticationProviderOptions.AuthenticationProviderOptionsConverter.class)
     private AuthenticationProviderOptions options;
@@ -97,6 +96,7 @@ public class AuthenticationProviderConfiguration implements java.io.Serializable
      * @param locale The locale to lookup the title.
      * @return An optional string, being empty if not found and no default.
      */
+    @JsonIgnore
     public Optional<String> getTitle(Locale locale) {
         return Optional.ofNullable(title.getOrDefault(locale, title.get(BundleUtil.getDefaultLocale())));
     }
@@ -106,6 +106,7 @@ public class AuthenticationProviderConfiguration implements java.io.Serializable
      * @param locale The locale to lookup the title as string tag, following IETF BCP 47, e.g. 'en' or 'en-US'.
      * @return An optional string, being empty if not found and no default.
      */
+    @JsonIgnore
     public Optional<String> getTitle(String locale) {
         Locale lookup = LocaleUtils.toLocale(locale);
         return getTitle(lookup);
@@ -115,6 +116,7 @@ public class AuthenticationProviderConfiguration implements java.io.Serializable
      * Receive title string using system default locale
      * @return An optional string, being empty if not found and no default.
      */
+    @JsonIgnore
     public Optional<String> getTitle() {
         return getTitle(BundleUtil.getDefaultLocale());
     }
