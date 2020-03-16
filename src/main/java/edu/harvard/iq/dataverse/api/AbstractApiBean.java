@@ -687,6 +687,15 @@ public abstract class AbstractApiBean {
                 .build();
     }
     
+    protected Response created( String uri, JsonValue data ) {
+        return Response.created( URI.create(uri) )
+            .entity( Json.createObjectBuilder()
+                .add("status", "OK")
+                .add("data", data).build())
+            .type(MediaType.APPLICATION_JSON)
+            .build();
+    }
+    
     protected Response accepted(JsonObjectBuilder bld) {
         return Response.accepted()
                 .entity(Json.createObjectBuilder()

@@ -189,7 +189,7 @@ public class HarvestingServer extends AbstractApiBean {
     public Response modifyOaiSet(String jsonBody, @PathParam("specname") String spec, @QueryParam("key") String apiKey) throws IOException, JsonParseException {
         // TODO:
         // ...
-        return created("/harvest/server/oaisets" + spec, null);
+        return created("/harvest/server/oaisets" + spec, JsonObject.NULL);
     }
     
     @DELETE
