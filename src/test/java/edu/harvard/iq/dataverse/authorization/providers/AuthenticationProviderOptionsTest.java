@@ -27,6 +27,20 @@ class AuthenticationProviderOptionsTest {
     }
     
     @Test
+    void testUnmarshalingPartial() throws Exception {
+        // given
+        String json = "{\"client_id\": \"test\", \"client_secret\": \"test\" }";
+        AuthenticationProviderOptions expect = new AuthenticationProviderOptions();
+        expect.oauthClientId = "test";
+        expect.oauthClientSecret = "test";
+        
+        // when
+        AuthenticationProviderOptions opts = mapper.readValue(json, AuthenticationProviderOptions.class);
+        // then
+        assertEquals(expect, opts);
+    }
+    
+    @Test
     void testMarshalingComplete() throws Exception {
         // given
         String expect = "{\"client_id\":\"test\",\"client_secret\":\"test\",\"user_endpoint\":\"test\",\"issuer\":\"test\",\"passive_login\":true}";

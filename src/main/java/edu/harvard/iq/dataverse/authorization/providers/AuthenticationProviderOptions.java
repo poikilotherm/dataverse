@@ -66,6 +66,15 @@ public class AuthenticationProviderOptions {
         return false;
     }
     
+    public String toString() {
+        return
+        "client_id: "+this.oauthClientId+", "+
+        "client_secret: "+this.oauthClientSecret+", "+
+        "user_endpoint: "+this.oauthUserEndpoint+", "+
+        "issuer: "+this.oidcIssuerUrl+", "+
+        "passive_login: "+this.shibPassiveLogin;
+    }
+    
     public static class AuthenticationProviderOptionsConverter implements AttributeConverter<AuthenticationProviderOptions, String> {
         @Override
         public String convertToDatabaseColumn(AuthenticationProviderOptions authenticationProviderOptions) {

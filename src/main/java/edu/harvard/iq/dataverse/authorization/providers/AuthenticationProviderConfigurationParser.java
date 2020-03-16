@@ -1,6 +1,8 @@
 package edu.harvard.iq.dataverse.authorization.providers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.datatype.jsr353.JSR353Module;
 import edu.harvard.iq.dataverse.authorization.exceptions.AuthenticationProviderConfigurationException;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
@@ -9,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import javax.json.Json;
+import javax.json.JsonObject;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -42,6 +46,11 @@ public class AuthenticationProviderConfigurationParser {
             logger.warning(e.getMessage());
             throw new AuthenticationProviderConfigurationException(e.getMessage());
         }
+    }
+    
+    public static JsonObject serialize(AuthenticationProviderConfiguration config) {
+        mapper.registerModule(new JSR353Module());
+        return mapper.convertValue(config, JsonObject.class);
     }
     
     /**

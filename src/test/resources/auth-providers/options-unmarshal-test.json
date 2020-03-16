@@ -1,0 +1,12 @@
+{
+    "id": "test",
+    "type": "test",
+    "enabled": true,
+    "title": {
+        "en": "test"
+    },
+    "options": {
+        "client_id": "test",
+        "client_secret": "test"
+    }
+}
