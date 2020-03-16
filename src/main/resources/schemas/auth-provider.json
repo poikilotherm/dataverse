@@ -1,0 +1,164 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Dataverse Authentication Providers",
+    "type": "object",
+    "required": [
+        "id",
+        "type",
+        "enabled",
+        "title"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "id": {
+            "$id": "#root/id",
+            "description": "A unique id for this provider.",
+            "type": "string",
+            "examples": [
+                "test"
+            ],
+            "pattern": "^[a-z][A-Za-z_]*$"
+        },
+        "type": {
+            "$id": "#root/type",
+            "description": "The type corresponds to the available factory classes.",
+            "type": "string",
+            "examples": [
+                "github"
+            ],
+            "enum": ["builtin", "shib", "github", "google", "microsoft", "orcid", "oidc"]
+        },
+        "enabled": {
+            "$id": "#root/enabled",
+            "type": "boolean",
+            "examples": [
+                true
+            ],
+            "default": false
+        },
+        "logo": {
+            "$id": "#root/logo",
+            "description": "A base64 encoded logo image.",
+            "type": "string",
+            "default": "",
+            "pattern": "^(?:[a-zA-Z0-9+\\/]{4})*(?:|(?:[a-zA-Z0-9+\\/]{3}=)|(?:[a-zA-Z0-9+\\/]{2}==)|(?:[a-zA-Z0-9+\\/]{1}===))$"
+        },
+        "title": {
+            "$id": "#root/title",
+            "description": "The name of your provider as shown on the buttons during login.",
+            "oneOf": [
+                {
+                    "type": "object",
+                    "title": "Map of i18n titles. Locale as key, text as value. Locale has to follow usual tags like 'en' or 'en_US'.",
+                    "required": ["en"],
+                    "patternProperties": {
+                        "^[a-z]{2}_[A-Z]{2}$": { "type": "string" },
+                        "^[a-z]{2}$": { "type": "string" }
+                    },
+                    "additionalProperties": false,
+                    "examples": [ "{\"en\": \"This is a test provider.\"}" ]
+                },
+                {
+                    "type": "string",
+                    "examples": ["My provider"]
+                }
+            ]
+        },
+        "description": {
+            "$id": "#root/description",
+            "description": "A more detailed explanation to be shown when a user selected the provider.",
+            "oneOf": [
+                {
+                    "type": "object",
+                    "title": "Map of i18n explanation. Locale as key, text as value. Locale has to follow usual tags like 'en' or 'en_US'.",
+                    "required": ["en"],
+                    "patternProperties": {
+                        "^[a-z]{2}_[A-Z]{2}$": { "type": "string" },
+                        "^[a-z]{2}$": { "type": "string" }
+                    },
+                    "additionalProperties": false,
+                    "examples": [ "{\"en\": \"This is a schema test provider.\"}" ]
+                },
+                {
+                    "type": "string",
+                    "examples": ["What's so special about me?"]
+                }
+            ]
+        },
+        "options": {
+            "$id": "#root/options",
+            "type": "object",
+            "description": "Options for this provider."
+        },
+        "permissions": {
+            "$id": "#root/permission",
+            "type": "object",
+            "description": "A map of enable permissions for this provider. Not used yet, please see https://github.com/IQSS/dataverse/issues/6515 and https://github.com/IQSS/dataverse/issues/6679."
+        }
+    },
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "type": { "enum": ["github","google","microsoft","orcid"] }
+                }
+            },
+            "then": {
+                "required": ["options"],
+                "properties": {
+                    "options": {
+                        "required": ["client_id", "client_secret"],
+                        "properties": {
+                            "client_id": { "type": "string" },
+                            "client_secret": { "type": "string" },
+                            "user_endpoint": { "type": "string" }
+                        },
+                        "additionalProperties": false
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "type": { "enum": ["oidc"] }
+                }
+            },
+            "then": {
+                "required": ["options"],
+                "properties": {
+                    "options": {
+                        "required": ["client_id", "client_secret", "issuer"],
+                        "properties": {
+                            "client_id": { "type": "string" },
+                            "client_secret": { "type": "string" },
+                            "issuer": { "type": "string" }
+                        },
+                        "additionalProperties": false
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "type": { "enum": ["shib"] }
+                }
+            },
+            "then": {
+                "properties": {
+                    "options": {
+                        "properties": {
+                            "passive_login": {
+                                "type": "boolean",
+                                "default": false
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                }
+            }
+        }
+    ]
+}

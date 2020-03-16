@@ -647,6 +647,7 @@
                     <include>**/*.xml</include>
                     <include>**/firstNames/*.*</include>
                     <include>**/*.xsl</include>
+                    <include>**/*.json</include>
                 </includes>
             </resource>
         </resources>
