@@ -2,13 +2,11 @@ package edu.harvard.iq.dataverse.authorization.providers;
 
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.harvard.iq.dataverse.util.json.LocalizedMapConverter;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -75,6 +73,7 @@ public class AuthenticationProviderOptions {
         "passive_login: "+this.shibPassiveLogin;
     }
     
+    @Converter
     public static class AuthenticationProviderOptionsConverter implements AttributeConverter<AuthenticationProviderOptions, String> {
         @Override
         public String convertToDatabaseColumn(AuthenticationProviderOptions authenticationProviderOptions) {
