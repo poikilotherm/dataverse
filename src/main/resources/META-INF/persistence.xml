@@ -31,4 +31,15 @@
             <property name="toplink.jdbc.password" value="secret"/>
         </properties>
     </persistence-unit -->
+    <persistence-unit name="integration-test" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="eclipselink.weaving" value="false"/>
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+            <property name="eclipselink.cache.shared.default" value="false"/>
+            <property name="eclipselink.id-validation" value="NULL"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+        </properties>
+    </persistence-unit>
 </persistence>
