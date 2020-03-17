@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import edu.harvard.iq.dataverse.util.BundleUtil;
 import edu.harvard.iq.dataverse.util.json.LocalizedMapConverter;
 import org.apache.commons.lang3.LocaleUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.util.*;
 import javax.persistence.*;
@@ -184,6 +185,10 @@ public class AuthenticationProviderConfiguration implements java.io.Serializable
         }
         final AuthenticationProviderConfiguration other = (AuthenticationProviderConfiguration) obj;
         return Objects.equals(this.id, other.id);
+    }
+    
+    boolean equalsDeep(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
     
 }

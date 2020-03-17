@@ -47,13 +47,15 @@ class AuthenticationProviderConfigurationIT {
     }
     
     @ParameterizedTest
-    @ValueSource(strings = {"minimal-valid.json", "title-i18n-valid.json"})
-    void testPersistance(String filename) throws Exception {
+    @ValueSource(strings = {"minimal-valid.json", "title-i18n-valid.json", "orcid-valid.json", "options-unmarshal-test.json"})
+    void testPersistence(String filename) throws Exception {
         Path file = Paths.get(ClassLoader.getSystemResource("auth-providers/"+filename).toURI());
         String content = new String(Files.readAllBytes(file), StandardCharsets.UTF_8);
         
         AuthenticationProviderConfiguration config = AuthenticationProviderConfigurationParser.parse(content);
         
         em.persist(config);
+        AuthenticationProviderConfiguration readBack = em.find(AuthenticationProviderConfiguration.class, config.getId());
+        assertTrue(config.equalsDeep(readBack));
     }
 }
