@@ -23,6 +23,7 @@
             This seems to play well with NetBeans 8.2, IDEA 2018.1 and mvn including compatibility with JaCoCo.
         -->
         <argLine>-Duser.timezone=${project.timezone} -Dfile.encoding=${project.build.sourceEncoding} -Duser.language=${project.language} -Duser.region=${project.region}</argLine>
+        <skipUnitTests>false</skipUnitTests>
         <aws.version>1.11.172</aws.version>
         <jackson.version>2.9.6</jackson.version>
         <commons.logging.version>1.2</commons.logging.version>
@@ -159,6 +160,35 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
             <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.11</version>
+            <!-- Once we are on Payara only, this can be included without scope - the app server loads the driver from the WAR -->
+            <scope>test</scope>
+        </dependency>
+        <!-- Glassfish 4.1 specific. Should be refactored when moving to Dataverse 5 -->
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>2.5.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -783,6 +813,7 @@
                 <configuration>
                     <!-- testsToExclude come from the profile-->
                     <excludedGroups>${testsToExclude}</excludedGroups>
+                    <skip>${skipUnitTests}</skip>
                 </configuration>
             </plugin>
             <plugin>
@@ -854,37 +885,31 @@
           </plugins>
         </build>
       </profile>
-      <profile>
-        <id>testcontainers</id>
-        <dependencies>
-          <dependency>
-              <groupId>org.testcontainers</groupId>
-              <artifactId>testcontainers</artifactId>
-              <scope>test</scope>
-          </dependency>
-          <dependency>
-              <groupId>org.testcontainers</groupId>
-              <artifactId>junit-jupiter</artifactId>
-              <scope>test</scope>
-          </dependency>
-          <dependency>
-              <groupId>org.testcontainers</groupId>
-              <artifactId>postgresql</artifactId>
-              <scope>test</scope>
-          </dependency>
-          <dependency>
-              <groupId>org.postgresql</groupId>
-              <artifactId>postgresql</artifactId>
-              <version>42.2.11</version>
-              <scope>test</scope>
-          </dependency>
-          <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>2.5.2</version>
-            <scope>test</scope>
-          </dependency>
-        </dependencies>
-      </profile>
+        <profile>
+            <id>testcontainers</id>
+            <properties>
+                <skipUnitTests>true</skipUnitTests>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.22.2</version>
+                        <configuration>
+                            <groups>testcontainers</groups>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>

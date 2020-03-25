@@ -1,6 +1,7 @@
 package edu.harvard.iq.dataverse.authorization.providers;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -22,13 +23,11 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
+@Tag("testcontainers")
 class AuthenticationProviderConfigurationIT {
     
     @Container
-    static PostgreSQLContainer sql = new PostgreSQLContainer("postgres:9.6")
-                                              .withDatabaseName("dataverse")
-                                              .withUsername("dataverse")
-                                              .withPassword("dataverse");
+    static PostgreSQLContainer sql = new PostgreSQLContainer("postgres:9.6");
     
     EntityManager em;
     EntityTransaction tx;
