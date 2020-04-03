@@ -22,6 +22,8 @@ import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProvider;
 import edu.harvard.iq.dataverse.authorization.UserIdentifier;
 import edu.harvard.iq.dataverse.authorization.exceptions.AuthorizationSetupException;
 import edu.harvard.iq.dataverse.authorization.groups.GroupServiceBean;
+import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProviderConfiguration;
+import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProviderConfigurationParser;
 import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProviderRow;
 import edu.harvard.iq.dataverse.authorization.providers.builtin.BuiltinUser;
 import edu.harvard.iq.dataverse.authorization.providers.builtin.BuiltinUserServiceBean;
@@ -38,15 +40,10 @@ import edu.harvard.iq.dataverse.dataaccess.StorageIO;
 import edu.harvard.iq.dataverse.engine.command.impl.AbstractSubmitToArchiveCommand;
 import edu.harvard.iq.dataverse.engine.command.impl.PublishDataverseCommand;
 import edu.harvard.iq.dataverse.settings.Setting;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+
+import javax.json.*;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import static edu.harvard.iq.dataverse.util.json.NullSafeJsonBuilder.jsonObjectBuilder;
 import static edu.harvard.iq.dataverse.util.json.JsonPrinter.*;
@@ -59,13 +56,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response.Status;
 
+import edu.harvard.iq.dataverse.util.json.NullSafeJsonBuilder;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -97,8 +92,6 @@ import java.util.Arrays;
 import java.util.Date;
 import javax.inject.Inject;
 import javax.persistence.Query;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.StreamingOutput;
 
 /**
@@ -201,35 +194,53 @@ public class Admin extends AbstractApiBean {
 				.map(f -> jsonObjectBuilder().add("alias", f.getAlias()).add("info", f.getInfo()))
 				.collect(toJsonArray()));
 	}
-
+	
+	
+	/*
 	@Path("authenticationProviders")
 	@GET
 	public Response listAuthProviders() {
 		return ok(em.createNamedQuery("AuthenticationProviderRow.findAll", AuthenticationProviderRow.class)
 				.getResultList().stream().map(r -> json(r)).collect(toJsonArray()));
 	}
+	*/
 
 	@Path("authenticationProviders")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@POST
-	public Response addProvider(AuthenticationProviderRow row) {
+	public Response addProvider(String json) {
 		try {
-			AuthenticationProviderRow managed = em.find(AuthenticationProviderRow.class, row.getId());
+			// first: validate via JSON Schema
+			boolean isValid = AuthenticationProviderConfigurationParser.validate(json);
+			// second: convert from JSON to (POJO) model
+			AuthenticationProviderConfiguration config = AuthenticationProviderConfigurationParser.parse(json);
+			
+			// third: merge with existing or add new
+			AuthenticationProviderConfiguration managed = em.find(AuthenticationProviderConfiguration.class, config.getId());
 			if (managed != null) {
-				managed = em.merge(row);
+				managed = em.merge(config);
 			} else {
-				em.persist(row);
-				managed = row;
+				em.persist(config);
+				managed = config;
 			}
+			
+			// fourth: register and load the provider
+			/*
 			if (managed.isEnabled()) {
 				AuthenticationProvider provider = authSvc.loadProvider(managed);
 				authSvc.deregisterProvider(provider.getId());
 				authSvc.registerProvider(provider);
 			}
-			return created("/api/admin/authenticationProviders/" + managed.getId(), json(managed));
+			 */
+			
+			// fifth: report back to admin
+			return created("/api/admin/authenticationProviders/" + managed.getId(), AuthenticationProviderConfigurationParser.serialize(managed));
 		} catch (AuthorizationSetupException e) {
 			return error(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 	}
+	
+	/*
 
 	@Path("authenticationProviders/{id}")
 	@GET
@@ -314,6 +325,7 @@ public class Admin extends AbstractApiBean {
 						? "WARNING: no enabled authentication providers left."
 						: ""));
 	}
+	*/
 
 	@GET
 	@Path("authenticatedUsers/{identifier}/")

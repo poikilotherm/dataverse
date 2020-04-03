@@ -714,17 +714,6 @@ public class JsonPrinter {
         }
     }
 
-    public static JsonObjectBuilder json(AuthenticationProviderRow aRow) {
-        return jsonObjectBuilder()
-                        .add("id", aRow.getId())
-                        .add("factoryAlias", aRow.getFactoryAlias() )
-                        .add("title", aRow.getTitle())
-                        .add("subtitle",aRow.getSubtitle())
-                        .add("factoryData", aRow.getFactoryData())
-                        .add("enabled", aRow.isEnabled())
-                ;
-    }
-
     public static JsonObjectBuilder json(PrivateUrl privateUrl) {
         return jsonObjectBuilder()
                 // We provide the token here as a convenience even though it is also in the role assignment.

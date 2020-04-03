@@ -7,6 +7,7 @@ import edu.harvard.iq.dataverse.RoleAssigneeServiceBean;
 import edu.harvard.iq.dataverse.UserNotificationServiceBean;
 import edu.harvard.iq.dataverse.UserServiceBean;
 import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProvider;
+import edu.harvard.iq.dataverse.authorization.providers.AuthenticationProviderConfiguration;
 import edu.harvard.iq.dataverse.authorization.providers.oauth2.oidc.OIDCAuthenticationProviderFactory;
 import edu.harvard.iq.dataverse.search.IndexServiceBean;
 import edu.harvard.iq.dataverse.actionlogging.ActionLogRecord;
@@ -147,7 +148,7 @@ public class AuthenticationServiceBean {
         }
         
         // Now, load the providers.
-        em.createNamedQuery("AuthenticationProviderRow.findAllEnabled", AuthenticationProviderRow.class)
+        em.createNamedQuery("AuthenticationProviderConfiguration.findAllEnabled", AuthenticationProviderConfiguration.class)
                 .getResultList().forEach((row) -> {
                     try {
                         registerProvider( loadProvider(row) );
@@ -170,12 +171,12 @@ public class AuthenticationServiceBean {
     }
     
     /**
-     * Tries to load and {@link AuthenticationProvider} using the passed {@link AuthenticationProviderRow}.
-     * @param aRow The row to load the provider from.
+     * Tries to load and {@link AuthenticationProvider} using the passed {@link AuthenticationProviderConfiguration}.
+     * @param config The configuration to load the provider from.
      * @return The provider, if successful
      * @throws AuthorizationSetupException If the factory failed to instantiate a provider from the row.
      */
-    public AuthenticationProvider loadProvider( AuthenticationProviderRow aRow ) throws AuthorizationSetupException {
+    public AuthenticationProvider loadProvider( AuthenticationProviderConfiguration config ) throws AuthorizationSetupException {
         AuthenticationProviderFactory fact = getProviderFactory(aRow.getFactoryAlias());
         
         if ( fact == null ) throw new AuthenticationProviderConfigurationException(aRow.getFactoryAlias());

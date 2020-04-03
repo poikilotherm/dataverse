@@ -28,7 +28,7 @@ public interface AuthenticationProvider {
     
     String getId();
         
-    AuthenticationProviderDisplayInfo getInfo();
+    AuthenticationProviderConfiguration getConfig();
     
     default int getOrder() { return 1; }
     default boolean isPasswordUpdateAllowed() { return false; };
