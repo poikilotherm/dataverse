@@ -48,8 +48,6 @@ import org.apache.commons.lang.StringUtils;
 @Stateless
 public class MailServiceBean implements java.io.Serializable {
     @EJB
-    UserNotificationServiceBean userNotificationService;
-    @EJB
     DataverseServiceBean dataverseService;
     @EJB
     DataFileServiceBean dataFileService;
@@ -71,44 +69,6 @@ public class MailServiceBean implements java.io.Serializable {
     private static final Logger logger = Logger.getLogger(MailServiceBean.class.getCanonicalName());
 
     private static final String charset = "UTF-8";
-
-    /**
-     * Creates a new instance of MailServiceBean
-     */
-    public MailServiceBean() {
-    }
-
-    public void sendMail(String host, String reply, String to, String subject, String messageText) {
-        Properties props = System.getProperties();
-        props.put("mail.smtp.host", host);
-        Session session = Session.getDefaultInstance(props, null);
-
-        try {
-            MimeMessage msg = new MimeMessage(session);
-            String[] recipientStrings = to.split(",");
-            InternetAddress[] recipients = new InternetAddress[recipientStrings.length];
-            try {
-            	InternetAddress fromAddress=getSystemAddress();
-            	fromAddress.setPersonal(BundleUtil.getStringFromBundle("contact.delegation", Arrays.asList(
-                        fromAddress.getPersonal(), reply)), charset);
-            	msg.setFrom(fromAddress);
-                msg.setReplyTo(new Address[] {new InternetAddress(reply, charset)});
-                for (int i = 0; i < recipients.length; i++) {
-                    recipients[i] = new InternetAddress(recipientStrings[i], "", charset);
-                }
-            } catch (UnsupportedEncodingException ex) {
-                logger.severe(ex.getMessage());
-            }
-            msg.setRecipients(Message.RecipientType.TO, recipients);
-            msg.setSubject(subject, charset);
-            msg.setText(messageText, charset);
-            Transport.send(msg, recipients);
-        } catch (AddressException ae) {
-            ae.printStackTrace(System.out);
-        } catch (MessagingException me) {
-            me.printStackTrace(System.out);
-        }
-    }
     
     @Resource(name = "mail/notifyMailSession")
     private Session session;
@@ -171,8 +131,7 @@ public class MailServiceBean implements java.io.Serializable {
        String systemEmail =  settingsService.getValueForKey(Key.SystemEmail);
        return MailUtil.parseSystemAddress(systemEmail);
     }
-
-    //@Resource(name="mail/notifyMailSession")
+    
     public void sendMail(String from, String to, String subject, String messageText) {
         sendMail(from, to, subject, messageText, new HashMap<>());
     }
@@ -223,7 +182,6 @@ public class MailServiceBean implements java.io.Serializable {
         return sendNotificationEmail(notification, "");
     }
     
-    
     public Boolean sendNotificationEmail(UserNotification notification, String comment) {
         return sendNotificationEmail(notification, comment, null, false);
     }
@@ -231,10 +189,8 @@ public class MailServiceBean implements java.io.Serializable {
     public Boolean sendNotificationEmail(UserNotification notification, String comment, boolean isHtmlContent) {
         return sendNotificationEmail(notification, comment, null, isHtmlContent);
     }
-
-
-    public Boolean sendNotificationEmail(UserNotification notification, String comment, AuthenticatedUser requestor, boolean isHtmlContent){
-
+    
+    public Boolean sendNotificationEmail(UserNotification notification, String comment, AuthenticatedUser requestor, boolean isHtmlContent) {
         boolean retval = false;
         String emailAddress = getUserEmailAddress(notification);
         if (emailAddress != null){
@@ -255,7 +211,6 @@ public class MailServiceBean implements java.io.Serializable {
             logger.warning("Skipping " + notification.getType() +  " notification, because email address is null");
         }
         return retval;
-        
     }
 
     private String getDatasetManageFileAccessLink(DataFile datafile){
