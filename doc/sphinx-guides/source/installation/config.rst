@@ -348,15 +348,15 @@ Once you have set up ``:ComputeBaseUrl`` properly in both Dataverse and your clo
 - Compute on multiple datasets
 - Compute on a single datafile
 
-The compute buttons on dataset and file pages will link validated users to your computing environment. If a user is computing on one dataset, the compute button will redirect to:
+The compute tool options on dataset and file pages will link validated users to your computing environment. If a user is computing on one dataset, the compute tool option will redirect to:
 
 ``:ComputeBaseUrl?datasetPersistentId``
 
-If a user is computing on multiple datasets, the compute button will redirect to:
+If a user is computing on multiple datasets, the compute tool option will redirect to:
 
 ``:ComputeBaseUrl/multiparty?datasetPersistentId&anotherDatasetPersistentId&anotherDatasetPersistentId&...``
 
-If a user is computing on a single file, depending on the configuration of your installation, the compute button will either redirect to:
+If a user is computing on a single file, depending on the configuration of your installation, the compute tool option will either redirect to:
 
 ``:ComputeBaseUrl?datasetPersistentId=yourObject``
 
@@ -1594,22 +1594,6 @@ Make the metrics component on the root dataverse a clickable link to a website w
 
 ``curl -X PUT -d http://metrics.dataverse.example.edu http://localhost:8080/api/admin/settings/:MetricsUrl``
 
-:StatusMessageHeader
-++++++++++++++++++++
-
-For dynamically adding an informational header to the top of every page. StatusMessageText must also be set for a message to show. For example, "For testing only..." at the top of https://demo.dataverse.org is set with this:
-
-``curl -X PUT -d "For testing only..." http://localhost:8080/api/admin/settings/:StatusMessageHeader``
-
-You can make the text clickable and include an additional message in a pop up by setting ``:StatusMessageText``.
-
-:StatusMessageText
-++++++++++++++++++
-
-Alongside the ``:StatusMessageHeader`` you need to add StatusMessageText for the message to show.:
-
-``curl -X PUT -d "This appears in a popup." http://localhost:8080/api/admin/settings/:StatusMessageText``
-
 .. _:MaxFileUploadSizeInBytes:
 
 :MaxFileUploadSizeInBytes
@@ -1666,7 +1650,9 @@ For example, if you want your installation of Dataverse to not attempt to ingest
 :ZipUploadFilesLimit
 ++++++++++++++++++++
 
-Limit the number of files in a zip that Dataverse will accept.
+Limit the number of files in a zip that Dataverse will accept. In the absence of this setting, Dataverse defaults to a limit of 1,000 files per zipfile.
+
+``curl -X PUT -d 2048 http://localhost:8080/api/admin/settings/:ZipUploadFilesLimit``
 
 :SolrHostColonPort
 ++++++++++++++++++
