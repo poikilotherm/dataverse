@@ -17,21 +17,33 @@ public class MailSessionProducer {
     
     public static final String MAIL_CONFIG_PREFIX = "dataverse.mail.system";
     
+    Session systemMailSession;
+    
     @Produces
     @Resource(name = "java:app/notify/mail/system")
     public Session getSystemMailSession() {
-        return Session.getInstance(getMailProperties());
+        // return the saved session if properties have not changed
+        if (systemMailSession != null && systemMailSession.getProperties().equals(getMailProperties()))
+            return systemMailSession;
+        
+        // otherwise update and return
+        systemMailSession = Session.getInstance(getMailProperties());
+        return systemMailSession;
     }
     
     Properties getMailProperties() {
         Config config = ConfigProvider.getConfig();
-    
         // Map properties 1:1 to mail.smtp properties for the mail session.
         // See https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html for an extensive list
         // of options.
         Map<String,String> propMap = StreamSupport.stream(config.getPropertyNames().spliterator(), false)
                                                   .filter(prop -> prop.startsWith(MAIL_CONFIG_PREFIX+"."))
-                                                  .collect(Collectors.toConcurrentMap(s -> s.replace(MAIL_CONFIG_PREFIX, "mail.smtp"), s -> config.getValue(s, String.class)));
+                                                  .collect(
+                                                      Collectors.toConcurrentMap(
+                                                          s -> s.replace(MAIL_CONFIG_PREFIX, "mail.smtp"),
+                                                          s -> config.getValue(s, String.class)
+                                                      )
+                                                  );
         Properties mailProps = new Properties();
         mailProps.putAll(propMap);
         
