@@ -41,6 +41,9 @@ function bind_bsui_components(){
     // clipboard.js click to copy
     clickCopyClipboard();
     
+    // Scrolling autoComplete dropdown in popups
+    handle_dropdown_popup_scroll();
+    
     // Dialog Listener For Calling handleResizeDialog
     PrimeFaces.widget.Dialog.prototype.postShow = function() {
         var dialog_id = this.jq.attr('id').split(/[:]+/).pop();
@@ -202,7 +205,7 @@ function clickCopyClipboard(){
 
         // check which selector was clicked
         // swap icon for success ok
-        if ($(e.trigger).hasClass('btn-copy')) {
+        if ($(e.trigger).hasClass('glyphicon')) {
             $(e.trigger).removeClass('glyphicon-copy').addClass('glyphicon-ok text-success');
             // then swap icon back to clipboard
             // https://stackoverflow.com/a/54270499
@@ -211,9 +214,9 @@ function clickCopyClipboard(){
             }, 2000);
         }
         else {
-            $(e.trigger).next('.btn-copy').removeClass('glyphicon-copy').addClass('glyphicon-ok text-success');
+            $(e.trigger).next('.btn-copy.glyphicon').removeClass('glyphicon-copy').addClass('glyphicon-ok text-success');
             setTimeout(()=> {
-                $(e.trigger).next('.btn-copy').removeClass('glyphicon-ok text-success').addClass('glyphicon-copy')
+                $(e.trigger).next('.btn-copy.glyphicon').removeClass('glyphicon-ok text-success').addClass('glyphicon-copy')
             }, 2000);
         }
     });
