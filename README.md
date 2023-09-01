@@ -16,6 +16,7 @@ We love contributors! Please see our [Contributing Guide][] for ways you can hel
 Dataverse is a trademark of President and Fellows of Harvard College and is registered in the United States.
 
 [![Dataverse Project logo](src/main/webapp/resources/images/dataverseproject_logo.jpg?raw=true "Dataverse Project")](http://dataverse.org)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpoikilotherm%2Fdataverse.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpoikilotherm%2Fdataverse?ref=badge_shield)
 
 [![API Test Status](https://jenkins.dataverse.org/buildStatus/icon?job=IQSS-dataverse-develop&subject=API%20Test%20Status)](https://jenkins.dataverse.org/job/IQSS-dataverse-develop/)
 [![API Test Coverage](https://img.shields.io/jenkins/coverage/jacoco?jobUrl=https%3A%2F%2Fjenkins.dataverse.org%2Fjob%2FIQSS-dataverse-develop&label=API%20Test%20Coverage)](https://jenkins.dataverse.org/job/IQSS-dataverse-develop/ws/target/coverage-it/index.html)
@@ -38,3 +39,7 @@ Dataverse is a trademark of President and Fellows of Harvard College and is regi
 [chat.dataverse.org]: http://chat.dataverse.org
 [Dataverse Community Meeting]: https://dataverse.org/events
 [open source]: LICENSE.md
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpoikilotherm%2Fdataverse.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpoikilotherm%2Fdataverse?ref=badge_large)
