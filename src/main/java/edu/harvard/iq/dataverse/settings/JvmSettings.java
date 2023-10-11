@@ -286,7 +286,7 @@ public enum JvmSettings {
         return this.scopedKey;
     }
     
-    public Pattern getPatternizedKey() {
+    public Pattern getPatternedKey() {
         return Pattern.compile(
             getScopedKey()
                 .replace(SCOPE_SEPARATOR, "\\.")

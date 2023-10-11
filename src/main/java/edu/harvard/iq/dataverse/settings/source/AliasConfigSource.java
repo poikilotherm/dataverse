@@ -58,7 +58,7 @@ public final class AliasConfigSource implements ConfigSource {
         // Aliases with placeholders need to be compiled into a regex
         aliasedSettings.stream()
             .filter(JvmSettings::needsVarArgs)
-            .forEach(setting -> varArgAliases.put(setting.getPatternizedKey(), setting.getOldNames()));
+            .forEach(setting -> varArgAliases.put(setting.getPatternedKey(), setting.getOldNames()));
     }
     
     
