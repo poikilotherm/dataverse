@@ -103,7 +103,15 @@ Moving or Replacing a JVM Setting
 
 When moving an old key to a new (especially when doing so with a former JVM system property setting), you should
 add an alias to the ``JvmSettings`` definition to enable backward compatibility. Old names given there are capable of
-being used with patterned lookups.
+being used with patterned lookups, but must follow some rules:
+
+- Must be given as fully scopes names, not just the old unscoped key/name.
+  (Otherwise it would not be possible to switch between completely different scopes.)
+- Must contain "%s" as replaceable substring for settings using placeholders.
+- The order of these placeholders cannot be changed between old and new names to keep semantics intact.
+  (Usually placeholders are used to describe some sort of object.)
+
+Note: old names are currently limited to keyed settings and cannot be defined for scopes or placeholder settings.
 
 Another option is to add the alias in ``src/main/resources/META-INF/microprofile-aliases.properties``. The format is
 always like ``dataverse.<scope/....>.newname...=old.property.name``. Note this doesn't provide support for patterned

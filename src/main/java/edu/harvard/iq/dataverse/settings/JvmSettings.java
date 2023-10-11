@@ -152,7 +152,7 @@ public enum JvmSettings {
 
     private static final String SCOPE_SEPARATOR = ".";
     public static final String PLACEHOLDER_KEY = "%s";
-    private static final Pattern OLD_NAME_PLACEHOLDER_PATTERN = Pattern.compile("%(\\d\\$)?s");
+    private static final Pattern OLD_NAME_PLACEHOLDER_PATTERN = Pattern.compile("%s");
     
     private final String key;
     private final String scopedKey;
@@ -206,15 +206,20 @@ public enum JvmSettings {
      * Create a setting with name it and associate with a parent scope.
      * (Could also be a scope, but old names for scopes aren't the way this is designed.)
      *
-     * When old names are given, these need to be given as fully scoped setting names! (Otherwise
-     * it would not be possible to switch between completely different scopes.)
+     * Old names are picked up by {@link edu.harvard.iq.dataverse.settings.source.AliasConfigSource} to allow backward
+     * compatible, non-breaking deprecation and switching to new setting names.
      *
      * @param scope The parent scope of this setting.
      * @param key The name of the setting.
      * @param oldNames Any previous names this setting was known as.
-     *                 Must be given as fully scopes names, not just the old unscoped key/name.
-     *                 Used by {@link edu.harvard.iq.dataverse.settings.source.AliasConfigSource} to allow backward
-     *                 compatible, non-breaking deprecation and switching to new setting names.
+     *                 <ul>
+     *                 <li>Must be given as fully scopes names, not just the old unscoped key/name.
+     *                     (Otherwise it would not be possible to switch between completely different scopes.)</li>
+     *                 <li>Must contain "%s" as replaceable substring for settings using placeholders.</li>
+     *                 <li>The order of these placeholders cannot be changed between old and new names to keep
+     *                     semantics intact. (Usually placeholders are used to describe some sort of object.)</li>
+     *                 </ul>
+     *
      */
     JvmSettings(JvmSettings scope, String key, String... oldNames) {
         this.key = key;
