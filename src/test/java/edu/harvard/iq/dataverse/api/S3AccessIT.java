@@ -72,7 +72,7 @@ public class S3AccessIT {
 //            System.out.println("bucket: " + bucket);
 //        }
         // create bucket if it doesn't exist
-        // Note that we create the localstack bucket with conf/localstack/buckets.sh
+        // Note that we create the localstack bucket with /docker/test/localstack/buckets.sh
         // because we haven't figured out how to create it properly in Java.
         // Perhaps it is missing ACLs.
         try {
