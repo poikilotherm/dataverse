@@ -132,6 +132,8 @@ COPY --chown=payara:payara maven/scripts ${SCRIPT_DIR}/
 # -- This is mostly inherited from the "production domain template", experience with Dataverse and
 #    https://blog.payara.fish/fine-tuning-payara-server-5-in-production
 RUN <<EOF
+    mv "${SCRIPT_DIR}/jdbc-conffile.jar" "${PAYARA_DIR}/glassfish/lib/"
+
     # Set admin password
     echo "AS_ADMIN_PASSWORD=" > /tmp/password-change-file.txt
     echo "AS_ADMIN_NEWPASSWORD=${ADMIN_PASSWORD}" >> /tmp/password-change-file.txt
@@ -190,6 +192,13 @@ RUN <<EOF
     ${ASADMIN} create-system-properties jersey.config.client.connectTimeout="300000"
 
     ### DATAVERSE APPLICATION SPECIFICS
+    ${ASADMIN} create-jdbc-connection-pool --restype java.sql.Driver --driverclassname io.gdcc.jdbc.conffile.ConfFileDriver confFilePool
+    ${ASADMIN} set resources.jdbc-connection-pool.confFilePool.property.url='jdbc:conffile:toml://${ENV=CONFIG_DIR}' # Workaround because of defunct colon escaping in create command
+    ${ASADMIN} create-jdbc-resource --connectionpoolid confFilePool java/db/conffile
+    # Move this to the init script while booting to make the table name (=file prefix) configurable
+    ${ASADMIN} set-jdbc-config-source-configuration --jndiname "java/db/conffile" --tablename "dataverse" --keycolumnname "key" --valuecolumnname "value"
+
+    ${ASADMIN} set-config-dir --directory="${SECRETS_DIR}"
     # Configure the MicroProfile directory config source to point to /secrets
     ${ASADMIN} set-config-dir --directory="${SECRETS_DIR}"
     # Password alias store = 105, default = 100 - lets sort between those to enable overriding from all of the others
