@@ -34,12 +34,16 @@ import edu.harvard.iq.dataverse.util.json.NullSafeJsonBuilder;
  * 
  */
 
-public class PersonOrOrgUtil {
+public final class PersonOrOrgUtil {
 
+    private PersonOrOrgUtil() {
+        // Intentionally left blank for this static helper class
+    }
+    
     private static final Logger logger = Logger.getLogger(PersonOrOrgUtil.class.getCanonicalName());
 
-    static boolean assumeCommaInPersonName = false;
-    static List<String> orgPhrases;
+    private static boolean assumeCommaInPersonName = false;
+    private static List<String> orgPhrases;
 
     static {
         setAssumeCommaInPersonName(Boolean.parseBoolean(System.getProperty("dataverse.personOrOrg.assumeCommaInPersonName", "false")));
@@ -66,6 +70,12 @@ public class PersonOrOrgUtil {
      * @return
      */
     public static JsonObject getPersonOrOrganization(String name, boolean organizationIfTied, boolean isPerson) {
+        return getPersonOrOrganization(name, organizationIfTied, isPerson, assumeCommaInPersonName, orgPhrases);
+    }
+    
+    // Package private for side effect free testing, allowing to inject specific context
+    static JsonObject getPersonOrOrganization(String name, boolean organizationIfTied, boolean isPerson,
+                                              boolean assumeCommaInPersonName, List<String> orgPhrases) {
         name = StringUtil.normalize(name);
 
         String givenName = null;
@@ -136,8 +146,7 @@ public class PersonOrOrgUtil {
 
     }
 
-    // Public for testing
-    public static void setOrgPhraseArray(String phraseArray) {
+    private static void setOrgPhraseArray(String phraseArray) {
         orgPhrases = new ArrayList<String>();
         if (!StringUtil.isEmpty(phraseArray)) {
             try {
@@ -152,9 +161,8 @@ public class PersonOrOrgUtil {
         }
 
     }
-
-    // Public for testing
-    public static void setAssumeCommaInPersonName(boolean assume) {
+    
+    private static void setAssumeCommaInPersonName(boolean assume) {
         assumeCommaInPersonName = assume;
     }
 
