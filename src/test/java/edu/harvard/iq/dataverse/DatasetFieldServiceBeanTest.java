@@ -43,7 +43,12 @@ public class DatasetFieldServiceBeanTest {
     void tearDown() {
       this.datasetFieldServiceBean = null;
     }
-
+    
+    @Test
+    void test() throws IOException {
+        JsonObject cvocEntry = prepare("authorAffiliation", "src/test/resources/json/cvoc-ror.json");
+    }
+    
     @Test
     void getIndexableStringsByTermUriSkosmos() throws IOException {
         String fieldName = "keyword";
